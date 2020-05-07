@@ -6,6 +6,9 @@
 # remixed by: FoodFighter (https://www.thingiverse.com/FoodFighter)
 # remixed: Feb/2020
 # continued: https://github.com/pinguinpfleger/ASWX1-TFTFW-MOD
+# remixed: May/2020
+# by https://t.me/frakctured
+# continued: https://github.com/frakctured/ASWX1-TFTFW-MOD
 # --------------------- Disclaimer -------------------------------
 # Use at your own risk!
 # There are inherent dangers of upgrading your firmware and config files. We caution you to make sure that you completely understand the potential risks before applying/uploading any of the software to your 3d-Printer
@@ -184,25 +187,25 @@ It will auto heat up if the current temp doesn't reach the target.
 #edit command for 1~7 "More" button, each command must be separated by semicolon
 
 #########################################
-#Autotuning for nozzle+Bed + Auto-Save
->moreitem_button1_cmd:M106 S255;G4 S1;M303 C8 E0 S220 U1;G4 S1;M303 C8 E-1 S72 U1;G4 S1;M500;G4 S1;M107;G4 S1;
+#Autotuning del PID para extrusor y cama, según guía de https://t.me/ARTILLERY_X1_3D. Hace el cálculo y guarda en la Eeprom
+>moreitem_button1_cmd:M106 S255;G4 S1;M303 C8 E0 S200 U1;G4 S1;M303 C8 E-1 S60 U1;G4 S1;M500;G4 S1;M107;G4 S1;
 
-#Manuel Bed Level: Homing, All Motors but Z Off (Blue -> Green)
->moreitem_button2_cmd:M42 P4 S0;M42 P5 S0;M42 P6 S255;G28;G1 Z0;M18 S600;M18 X Y E; M42 P4 S255;M42 P5 S0;M42 P6 S0;
+# Inicio del Mesh Bed Leveling (MBL). Se sitúa en el primer punto del patron de nivelado de 9 puntos.
+>moreitem_button2_cmd:G29 S1;
 
- LiveAdjustZ+ (-> green)
->moreitem_button3_cmd:M290 Z0.025;M42 P4 S255;M42 P5 S0;M42 P6 S0;
+# Subir Z .025
+>moreitem_button3_cmd:G91; G1 Z0.025; G90;M42 P4 S255;M42 P5 S0;M42 P6 S0;
 
-#SaveToEEPROM (red -> green)
+#Guardar a la EEPROM. Leds (rojo -> verde)
 >moreitem_button4_cmd:M42 P4 S0;M42 P5 S255;M42 P6 S0;M500;G4 S1;M42 P4 S255;M42 P5 S0;M42 P6 S0;
 
-#PreHeat PLA (blue -> green)
+#Precalentar para PLA. Leds (azul -> verde)
 >moreitem_button5_cmd:M42 P4 S0;M42 P5 S0;M42 P6 S255;M104 S205; M140 S60; G4 P500;M42 P4 S255;M42 P5 S0;M42 P6 S0;
 
-#PreHeat PETG (blue -> green)
->moreitem_button6_cmd:M42 P4 S0;M42 P5 S0;M42 P6 S255;M104 S235; M140 S85; G4 P500;M42 P4 S255;M42 P5 S0;M42 P6 S0;
+#Siguiente punto del Mesh Bed Leveling (MBL). Se sitúa en el siguiente punto del patron de nivelado de 9 puntos.
+>moreitem_button6_cmd:G29 S2;
 
-#LiveAdjustZ- (-> green)
+# Bajar Z .025
 >moreitem_button7_cmd:M290 Z-0.025;M42 P4 S0;M42 P5 S0;M42 P6 S255;
 #########################################
 
